@@ -1,4 +1,4 @@
 package com.telusko.titans.pms.repo;
 
-public interface IProductRepo {
+public interface IProductBrand {
 }
