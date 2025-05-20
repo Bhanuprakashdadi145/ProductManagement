@@ -1,31 +1,47 @@
 package com.telusko.titans.pms.web;
 
-import com.telusko.titans.pms.model.Product;
-import com.telusko.titans.pms.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.telusko.titans.pms.dto.ProductDto;
+import com.telusko.titans.pms.exceptions.ProductNotFoundException;
+import com.telusko.titans.pms.service.IProductService;
 
 @RestController
-@RequestMapping("/api")
 public class ProductController {
 
-    private IProductService productService;
-    @Autowired
-    public void setProductService(IProductService productService) {
-        this.productService = productService;
-    }
-    @GetMapping("/products")
-    public ResponseEntity<List<Product>> fetchAllProducts(){
-         List<Product> products=productService.getAllproducts();
+	@Autowired
+	IProductService service;
 
-        return  new ResponseEntity<>(products, HttpStatus.OK);
-    }
+	@GetMapping("/products")
+	ResponseEntity<Page<ProductDto>> getAllProducts(@PageableDefault(size = 10, page = 0) Pageable pageable) {
+		Page<ProductDto> dto = service.getAllProducts(pageable);
+		return new ResponseEntity<Page<ProductDto>>(dto, HttpStatus.OK);
+	}
+
+	@GetMapping("/product/{id}")
+	ResponseEntity<ProductDto> getProduct(@PathVariable int id) {
+		ProductDto dto = service.getProductById(id);
+		if (dto == null) {
+			throw new ProductNotFoundException("Product with Id " + id + " does not exist");
+		}
+		return new ResponseEntity<ProductDto>(dto, HttpStatus.OK);
+
+	}
+
+	@PostMapping("/product")
+	ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto product) {
+		ProductDto dto = service.addProduct(product);
+		return new ResponseEntity<ProductDto>(dto, HttpStatus.OK);
+	}
 
 }

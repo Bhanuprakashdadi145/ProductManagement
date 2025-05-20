@@ -1,60 +1,59 @@
 package com.telusko.titans.pms.model;
 
-import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
 public class Product {
-   @Id
-//   @GeneratedValue(
-//           generator = "sequenceForProduct",
-//           strategy = GenerationType.SEQUENCE
-//   )
-//   @SequenceGenerator(
-//           name = "sequenceForProduct",
-//           sequenceName = "sequenceForProduct",
-//           initialValue = 100,
-//           allocationSize = 1
-//   )
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer productId;
-    @Column(
-            nullable = false
-    )
-    private String productName;
-    @Column(
-            nullable = false,
-            precision = 10,
-            scale = 2
-    )
-    private BigDecimal productPrice;
-
-    private Double productRating;
-    @Lob
-    private Byte[] productImage;
-
-    private BigInteger productQuantity;
-    @ManyToOne
-    @JoinColumn(
-            name = "product_category_id",
-            nullable = false
-    )
-    private ProductCategory productCategory;
-    @ManyToOne
-    @JoinColumn(
-            name = "product_brand_id",
-            nullable = false
-    )
-   private ProductBrand productBrand;
-
+	@Column(name="product_id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "product_sequence")
+	@SequenceGenerator(name = "product_sequence",sequenceName = "product_sequence",allocationSize = 1,initialValue = 5000)
+	private Integer productId;
+	
+	@Column(name="product_name",nullable = false)
+	private String productName;
+	
+	@Column(name="product_price",nullable = false)
+	private Integer productPrice;
+	
+	@Column(name="product_quantity_available")
+	private BigInteger quantityAvailable;
+	
+	
+	@Column(name="product_rating",precision = 10,scale = 2)
+	private BigDecimal productRating;
+	
+	@Column(name="product_image",columnDefinition = "bytea")
+	@Lob
+	private byte[] productImage;		
+	
+	@ManyToOne
+	@JoinColumn(name="product_category_id")
+	private ProductCategory productCategory;
+	
+	@ManyToOne
+	@JoinColumn(name="product_brand_id")
+	private ProductBrand productBrand;
+	
+	
+	
+	
 }

@@ -1,9 +1,13 @@
 package com.telusko.titans.pms.service;
 
-import com.telusko.titans.pms.model.Product;
-
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import com.telusko.titans.pms.dto.ProductDto;
 public interface IProductService {
-  List<Product> getAllproducts();
+	
+	ProductDto addProduct(ProductDto brand);
+
+	Page<ProductDto> getAllProducts(Pageable pageable);
+
+	ProductDto getProductById(int id);
 }

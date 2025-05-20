@@ -1,41 +1,43 @@
 package com.telusko.titans.pms.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name="product_brand")
 public class ProductBrand {
-    @Id
-//    @GeneratedValue(
-//            generator = "brand_seq",
-//            strategy = GenerationType.SEQUENCE
-//    )
-//    @SequenceGenerator(
-//            name = "brand_seq",
-//            initialValue = 1,
-//            allocationSize = 1,
-//            sequenceName = "brand_seq"
-//    )
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer brandId;
-    @Column(
-            nullable = false
-    )
-    private String BrandName;
-    @OneToMany(
-            mappedBy = "productBrand",
-            cascade = CascadeType.ALL
-    )
-    @JsonIgnore
-    private List<Product> products;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "brand_seq")
+	@SequenceGenerator(name = "brand_seq",sequenceName = "brand_seq",initialValue = 2000,allocationSize = 1)
+	@Column(name="brand_id")
+	private Integer brandId;
+	
+	@Column(name="brand_name",nullable = false)
+	private String brandName;
+	
+	@OneToMany(mappedBy = "productBrand", cascade = CascadeType.ALL)
+	private List<Product> products;
+	
+	
+	
+	
+
 }
