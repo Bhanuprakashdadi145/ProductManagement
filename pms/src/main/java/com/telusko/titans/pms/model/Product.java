@@ -1,4 +1,4 @@
-package com.telusko.titans.pms.models;
+package com.telusko.titans.pms.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,17 +16,17 @@ import java.math.BigInteger;
 @Entity
 public class Product {
    @Id
-   @GeneratedValue(
-           generator = "sequenceForProduct",
-           strategy = GenerationType.SEQUENCE
-   )
-   @SequenceGenerator(
-           name = "sequenceForProduct",
-           sequenceName = "sequenceForProduct",
-           initialValue = 100,
-           allocationSize = 1
-   )
-
+//   @GeneratedValue(
+//           generator = "sequenceForProduct",
+//           strategy = GenerationType.SEQUENCE
+//   )
+//   @SequenceGenerator(
+//           name = "sequenceForProduct",
+//           sequenceName = "sequenceForProduct",
+//           initialValue = 100,
+//           allocationSize = 1
+//   )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer productId;
     @Column(
             nullable = false

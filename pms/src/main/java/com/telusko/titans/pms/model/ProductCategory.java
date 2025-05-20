@@ -1,5 +1,6 @@
-package com.telusko.titans.pms.models;
+package com.telusko.titans.pms.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,16 +16,17 @@ import java.util.List;
 @Entity
 public class ProductCategory {
      @Id
-     @GeneratedValue(
-             generator = "sequence",
-             strategy = GenerationType.SEQUENCE
-     )
-     @SequenceGenerator(
-             name="sequence",
-             sequenceName = "sequence",
-             initialValue = 1000,
-             allocationSize = 1
-     )
+//     @GeneratedValue(
+//             generator = "sequence",
+//             strategy = GenerationType.SEQUENCE
+//     )
+//     @SequenceGenerator(
+//             name="sequence",
+//             sequenceName = "sequence",
+//             initialValue = 1000,
+//             allocationSize = 1
+//     )
+     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer categoryId;
     @Column(
             nullable = false
@@ -40,5 +42,6 @@ public class ProductCategory {
             mappedBy = "productCategory",
             cascade = CascadeType.ALL
     )
+    @JsonIgnore
     private List<Product> products;
 }
