@@ -1,8 +1,10 @@
 package com.telusko.titans.pms.web;
 
+import com.telusko.titans.pms.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.telusko.titans.pms.dto.ProductDto;
 import com.telusko.titans.pms.exceptions.ProductNotFoundException;
 import com.telusko.titans.pms.service.IProductService;
+
+import java.util.List;
 
 @RestController
 public class ProductController {
@@ -44,4 +48,22 @@ public class ProductController {
 		return new ResponseEntity<ProductDto>(dto, HttpStatus.OK);
 	}
 
+	@GetMapping("/products/{matchWord}")
+	public ResponseEntity<List> fetchByName(@PathVariable("matchWord") String word){
+		List<Product> products = service.searchByTheName(word);
+
+		return new ResponseEntity<>(products,HttpStatus.OK);
+	}
+
+	@GetMapping("/products/{min}/{max}")
+	public ResponseEntity<Page<Product>> fetchByProductPriceRange(
+			@PathVariable double min, @PathVariable double max,
+			@PageableDefault(page = 0, size = 5, sort = "productName", direction = Sort.Direction.ASC)
+			Pageable pageable
+	){
+		Page<Product> products = service.searchByTheProductPriceRange(min, max, pageable);
+		return  new ResponseEntity<>(products,HttpStatus.OK);
+	}
+
 }
+

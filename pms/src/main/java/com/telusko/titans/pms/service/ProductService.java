@@ -1,6 +1,8 @@
 package com.telusko.titans.pms.service;
 
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
@@ -76,5 +78,15 @@ public class ProductService implements IProductService {
 		return response_dto;
 	}
 
-	
+	@Override
+	public List<Product> searchByTheName(String keyword) {
+		 return  productRepo.searchByName(keyword);
+	}
+
+	@Override
+	public Page<Product> searchByTheProductPriceRange(double min, double max , Pageable pageable) {
+		return productRepo.searchByPriceRange(min,max, pageable);
+	}
+
+
 }

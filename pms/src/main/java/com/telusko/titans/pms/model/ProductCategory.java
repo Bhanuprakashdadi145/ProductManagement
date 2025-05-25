@@ -2,6 +2,7 @@ package com.telusko.titans.pms.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,7 +39,7 @@ public class ProductCategory {
 	
 	@Column(name="category_consumer_type")
 	private String consumerType;
-	
+	@JsonIgnore
 	@OneToMany(mappedBy="productCategory" , cascade = CascadeType.ALL)
 	private List<Product> products;
 	
