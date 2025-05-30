@@ -1,5 +1,8 @@
 package com.telusko.titans.pms.service;
 
+
+import com.telusko.titans.pms.exceptions.BrandNameNotValidException;
+import com.telusko.titans.pms.exceptions.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +37,6 @@ public class ProductService implements IProductService {
 	public ProductDto addProduct(ProductDto requestDto) {
 
 		ProductBrand brand = brandRepo.findByBrandNameIgnoreCase(requestDto.getProductBrand().getBrandName());
-
 		if (brand == null) {
 			brand = new ProductBrand();
 			BeanUtils.copyProperties(requestDto.getProductBrand(), brand);
@@ -54,15 +56,56 @@ public class ProductService implements IProductService {
 
 		product = productRepo.save(product);
 
-		ProductDto response_dto = ProductUtility.converProductToProductDto(product);
-
-		return response_dto;
+        return ProductUtility.converProductToProductDto(product);
 
 	}
 
 	@Override
+	public ProductDto updateProduct(Integer id ,ProductDto requestDto) {
+		Optional<Product> productOpt = productRepo.findById(id);
+		if (productOpt.isEmpty()) {
+			throw new ProductNotFoundException("Product not found with id: " + id);
+		}
+		Product existingProduct = productOpt.get();
+
+		// Get or create brand
+		ProductBrand brand = brandRepo.findByBrandNameIgnoreCase(requestDto.getProductBrand().getBrandName());
+		if (brand == null) {
+			brand = new ProductBrand();
+			brand.setBrandName(requestDto.getProductBrand().getBrandName());
+			brand = brandRepo.save(brand);
+		}
+
+		// Get or create category
+		ProductCategory category = categoryRepo
+				.findByCategoryNameIgnoreCase(requestDto.getProductCategory().getCategoryName());
+		if (category == null) {
+			category = new ProductCategory();
+			category.setCategoryName(requestDto.getProductCategory().getCategoryName());
+			category = categoryRepo.save(category);
+		}
+
+		// Update fields on the existing product
+		existingProduct.setProductName(requestDto.getProductName());
+		existingProduct.setProductPrice(requestDto.getProductPrice());
+		existingProduct.setQuantityAvailable(requestDto.getQuantityAvailable());
+		existingProduct.setProductRating(requestDto.getProductRating());
+
+		if (requestDto.getProductImage() != null) {
+			existingProduct.setProductImage(requestDto.getProductImage());
+		}
+
+		existingProduct.setProductBrand(brand);
+		existingProduct.setProductCategory(category);
+
+		// Save and return
+		Product savedProduct = productRepo.save(existingProduct);
+		return ProductUtility.converProductToProductDto(savedProduct);
+    }
+
+	@Override
 	public Page<ProductDto> getAllProducts(Pageable pageable) {
-		Page<ProductDto> products = productRepo.findAll(pageable).map(ProductUtility::converProductToProductDto);
+		Page<ProductDto> products = productRepo.findAll(pageable).map(product -> ProductUtility.converProductToProductDto(product));
 		return products;
 
 	}
@@ -79,6 +122,7 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public List<Product> searchByTheName(String keyword) {
 		 return  productRepo.searchByName(keyword);
 	}
@@ -89,4 +133,17 @@ public class ProductService implements IProductService {
 	}
 
 
+=======
+	public Page<ProductDto> searchProductsByBrand(String brandName, Pageable pageable) {
+		if (brandName == null || brandName.equals("null") || brandName.isEmpty()) {
+			throw new BrandNameNotValidException("Brand cannot be null or empty");
+		}
+		Page<Product> products = brandRepo.findByBrandNameContainingIgnoreCase(brandName, pageable);
+		if (products != null && !products.getContent().isEmpty()) {
+			Page<ProductDto> responseProducts = products.map(product -> ProductUtility.converProductToProductDto(product));
+			return responseProducts;
+		}
+		throw new BrandNameNotValidException("Brand does not exist or Not Valid Brand");
+	}
+>>>>>>> 667e8afb4d9a17c9ba9eb372ad221440396b7082
 }

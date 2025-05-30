@@ -11,11 +11,17 @@ public interface IProductService {
 	
 	ProductDto addProduct(ProductDto brand);
 
+	ProductDto updateProduct(Integer id, ProductDto productDto);
+
 	Page<ProductDto> getAllProducts(Pageable pageable);
 
 	ProductDto getProductById(int id);
 
+<<<<<<< HEAD
 	List<Product> searchByTheName(String keyword);
 
 	Page<Product> searchByTheProductPriceRange(double min,double max , Pageable pageable);
+=======
+	Page<ProductDto> searchProductsByBrand(String brandName,Pageable pageable);
+>>>>>>> 667e8afb4d9a17c9ba9eb372ad221440396b7082
 }
