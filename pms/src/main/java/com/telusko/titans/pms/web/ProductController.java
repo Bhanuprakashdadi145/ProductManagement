@@ -1,11 +1,11 @@
 package com.telusko.titans.pms.web;
 
-<<<<<<< HEAD
+
 import com.telusko.titans.pms.model.Product;
-=======
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telusko.titans.pms.exceptions.BrandNameNotValidException;
->>>>>>> 667e8afb4d9a17c9ba9eb372ad221440396b7082
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -74,7 +74,7 @@ public class ProductController {
 	Used path parameter to fetch particular brand products
 	*/
 
-<<<<<<< HEAD
+
 	@GetMapping("/products/{matchWord}")
 	public ResponseEntity<List> fetchByName(@PathVariable("matchWord") String word){
 		List<Product> products = service.searchByTheName(word);
@@ -92,7 +92,7 @@ public class ProductController {
 		return  new ResponseEntity<>(products,HttpStatus.OK);
 	}
 
-=======
+
 	@GetMapping("/search-by/brand/{brandName}")
 	public ResponseEntity<Page<ProductDto>> searchProductsByBrand(
 			@PathVariable("brandName") String brandName,
@@ -104,6 +104,6 @@ public class ProductController {
 			return new ResponseEntity<>(responsePageDto, HttpStatus.OK);
 		}
 	}
->>>>>>> 667e8afb4d9a17c9ba9eb372ad221440396b7082
+
 }
 
