@@ -122,7 +122,7 @@ public class ProductService implements IProductService {
 	}
 
 	@Override
-<<<<<<< HEAD
+
 	public List<Product> searchByTheName(String keyword) {
 		 return  productRepo.searchByName(keyword);
 	}
@@ -133,7 +133,7 @@ public class ProductService implements IProductService {
 	}
 
 
-=======
+
 	public Page<ProductDto> searchProductsByBrand(String brandName, Pageable pageable) {
 		if (brandName == null || brandName.equals("null") || brandName.isEmpty()) {
 			throw new BrandNameNotValidException("Brand cannot be null or empty");
@@ -145,5 +145,4 @@ public class ProductService implements IProductService {
 		}
 		throw new BrandNameNotValidException("Brand does not exist or Not Valid Brand");
 	}
->>>>>>> 667e8afb4d9a17c9ba9eb372ad221440396b7082
 }
