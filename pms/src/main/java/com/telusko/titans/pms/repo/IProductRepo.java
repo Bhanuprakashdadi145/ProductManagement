@@ -1,9 +1,7 @@
 package com.telusko.titans.pms.repo;
 
-<<<<<<< HEAD
+
 import com.telusko.titans.pms.model.Product;
-=======
->>>>>>> 667e8afb4d9a17c9ba9eb372ad221440396b7082
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
